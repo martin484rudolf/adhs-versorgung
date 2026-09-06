@@ -1,0 +1,668 @@
+{
+ "meta": {
+  "version": 1,
+  "stand": "2026-09-06",
+  "obergrenzen_massstab": "BfR-Hoechstmengen fuer Nahrungsergaenzungsmittel (2021/2023), sofern vorhanden",
+  "rote_flaggen": [
+   "Herzstolpern",
+   "Kribbeln",
+   "ungewohnte Schwaeche",
+   "anhaltender Durchfall"
+  ],
+  "rote_flaggen_aktion": "Abbruch der Einnahme, Arztverweis",
+  "ausschluss_vor_ergaenzung": [
+   "Nierenschwaeche (eGFR < 60)",
+   "ACE-Hemmer/Sartane/kaliumsparende Diuretika",
+   "laufende Darmbeschwerden (Aufnahme fraglich)"
+  ],
+  "medizinischer_hinweis": "Orientierung aus der Literatur. Umsetzung durch Arzt oder Apotheker gegenlesen."
+ },
+ "stoffe": [
+  {
+   "key": "schlaf",
+   "name": "Schlaf (Dauer, feste Aufstehzeit)",
+   "ebene": "lebensfuehrung",
+   "ziel": [
+    "aufmerksamkeit",
+    "stimmung",
+    "unruhe"
+   ],
+   "evidenz": "stark",
+   "effekt": "Staerker als jedes Supplement. Verspaetete Schlafphase ist bei ADHS gut belegt.",
+   "hinweis": "Feste Aufstehzeit wirkt mehr als feste Bettzeit. Messgroesse: schlaf_h, einschlaf_min.",
+   "versuch": "keiner",
+   "quellen": [
+    "Frontiers Psychiatry 2025 - ADHD as circadian rhythm disorder"
+   ]
+  },
+  {
+   "key": "licht_morgens",
+   "name": "Morgenlicht (Tageslicht oder 10.000 Lux, 30 min)",
+   "ebene": "lebensfuehrung",
+   "ziel": [
+    "schlaf",
+    "stimmung",
+    "energie"
+   ],
+   "evidenz": "mittel",
+   "effekt": "Verschiebt die innere Uhr nach vorn; bei ADHS mit verspaeteter Schlafphase der Hebel, an dem Melatonin ueberhaupt greift.",
+   "hinweis": "Abends Bildschirme dimmen gehoert dazu.",
+   "versuch": "wechsel",
+   "quellen": [
+    "PhASE-Studie, J Biol Rhythms 2022",
+    "Pilot Bright Light Therapy ADHD, PMC7959333"
+   ]
+  },
+  {
+   "key": "bewegung_ausdauer",
+   "name": "Ausdauer, Zone 2 (unter Neuro-Fit-Cap)",
+   "ebene": "lebensfuehrung",
+   "ziel": [
+    "aufmerksamkeit",
+    "stimmung",
+    "ausdauer"
+   ],
+   "evidenz": "stark",
+   "effekt": "Mittlere Effekte auf Exekutivfunktionen (Meta-Analysen); eine Einheit verbessert Aufmerksamkeit 1-2 h danach.",
+   "hinweis": "Nuechtern nur locker (<= 60-90 min); alles Harte mit Kohlenhydraten davor. 80/20 polarisiert fuer Cardio-Fitness.",
+   "versuch": "keiner",
+   "quellen": [
+    "Meta-Analysen Exercise & ADHD (u.a. Cerrillo-Urbina 2015)"
+   ]
+  },
+  {
+   "key": "krafttraining",
+   "name": "Krafttraining 2-3x/Woche",
+   "ebene": "lebensfuehrung",
+   "ziel": [
+    "kraft",
+    "stimmung",
+    "energie"
+   ],
+   "evidenz": "mittel",
+   "effekt": "Voraussetzung fuer Muskelaufbau bei Fettabbau (Rekomposition). Eiweiss 1,6-2,2 g/kg/Tag.",
+   "versuch": "keiner"
+  },
+  {
+   "key": "energieverfuegbarkeit",
+   "name": "Energieverfuegbarkeit (kein tiefes Defizit)",
+   "ebene": "lebensfuehrung",
+   "ziel": [
+    "stimmung",
+    "energie",
+    "kraempfe",
+    "schlaf"
+   ],
+   "evidenz": "stark",
+   "effekt": "Tiefes Defizit erzeugt Depression, Reizbarkeit, Schlafstoerung (Minnesota-Experiment); moderates Defizit mit guter Versorgung ist vertraeglich (CALERIE). Unter ~30 kcal/kg fettfreie Masse: Stimmung, Schlaf, Hormone, Kraempfe.",
+   "hinweis": "Defizit auf Ruhetage legen, Trainingstage voll essen. HRV-Abfall + Reizbarkeit + schlechter Schlaf = Warnsignal. Messgroesse: hunger.",
+   "versuch": "keiner",
+   "quellen": [
+    "Keys 1950 Minnesota",
+    "CALERIE 2016",
+    "RED-S/IOC Consensus"
+   ]
+  },
+  {
+   "key": "essenszeiten",
+   "name": "Zeitlich begrenztes Essen (frueh am Tag)",
+   "ebene": "lebensfuehrung",
+   "ziel": [
+    "schlaf",
+    "darm",
+    "stimmung"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Intervallfasten: maessiger Effekt auf depressive Symptome, kein Effekt auf Angst/Stimmung, kein Schaden (14 Studien). Zeitgeber fuer die innere Uhr. Autophagie beim Menschen erst 2025 gemessen, Nutzen offen.",
+   "hinweis": "Nicht mit Stimulanzien kombinieren (Appetit ohnehin gedrueckt). Unterzucker verschlechtert Reizregulation.",
+   "versuch": "wechsel",
+   "quellen": [
+    "Berthelot 2022 Meta-Analyse",
+    "GeroScience 2025 FMD Autophagie",
+    "Bamberg 2026 RCT Kognition"
+   ]
+  },
+  {
+   "key": "honig_abends",
+   "name": "Loeffel Honig / kleiner Toast am Abend",
+   "ebene": "kueche",
+   "ziel": [
+    "schlaf",
+    "unruhe"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Kohlenhydrate am Abend erleichtern Tryptophan-Aufnahme ins Gehirn (Mechanismus). Fuer Schlaf bei Erwachsenen nur Mechanismus + Erfahrung.",
+   "hinweis": "Unschaedlich, Ritual. Stimmung: unruhig abends.",
+   "versuch": "wechsel"
+  },
+  {
+   "key": "lavendel_kueche",
+   "name": "Lavendel (Tee, Bluetenhonig, Duftlampe)",
+   "ebene": "kueche",
+   "ziel": [
+    "unruhe",
+    "schlaf"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Aromawirkung ueber die Nase mit kleinen Effekten auf Unruhe/Schlaf. Nicht die Wirkstaerke der Silexan-Kapsel.",
+   "hinweis": "Aetherisches Oel NICHT aufs Brot (Schleimhautreizung, Dosis unkontrollierbar).",
+   "versuch": "wechsel"
+  },
+  {
+   "key": "rote_bete",
+   "name": "Rote-Bete-Saft (300-500 ml, 2-3 h vor Belastung)",
+   "ebene": "kueche",
+   "ziel": [
+    "ausdauer"
+   ],
+   "evidenz": "mittel",
+   "effekt": "Nitrat -> Stickstoffmonoxid, geringerer Sauerstoffbedarf bei gleicher Leistung; laengere Zeit bis Erschoepfung bei Freizeit-/Mittelklasse-Sportlern; Blutdruck leicht gesenkt.",
+   "hinweis": "Oxalat - bei Nierensteinneigung nicht taeglich literweise. Roter Urin harmlos. Bester Wechselversuch: Einheiten mit/ohne, Leistung bei gleichem Puls.",
+   "versuch": "wechsel",
+   "quellen": [
+    "Jones 2014 Sports Med Review",
+    "Domínguez 2017 Nutrients"
+   ]
+  },
+  {
+   "key": "keimlinge",
+   "name": "Keimlinge / Sprossen (selbst gezogen)",
+   "ebene": "kueche",
+   "ziel": [
+    "energie",
+    "darm"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Keimung hebt Naehrstoffdichte, baut Phytat ab -> Eisen/Zink besser verfuegbar. Brokkolisprossen (Sulforaphan): eine RCT bei Autismus (Singh 2014), fuer ADHS nichts.",
+   "hinweis": "Hoechstes Keimrisiko unter Lebensmitteln (EHEC 2011). Sauberes Glas, taeglich spuelen; bei Darmbeschwerden kurz blanchieren.",
+   "versuch": "keiner",
+   "quellen": [
+    "Singh 2014 PNAS Sulforaphan/Autismus"
+   ]
+  },
+  {
+   "key": "speisepilze",
+   "name": "Speisepilze (Austernpilz, Shiitake, Champignon, Lion's Mane frisch)",
+   "ebene": "kueche",
+   "ziel": [
+    "energie",
+    "darm"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Beta-Glucane, B-Vitamine, Selen, Ergothionein, Ballaststoffe; UV-behandelte Champignons liefern Vitamin D. Als Lebensmittel ohne Vorbehalt.",
+   "hinweis": "Eigenzucht auf Substrat ist sicher; Schimmel (gruen/schwarz/rosa) = verwerfen. Wildsammlung nicht ueber die App.",
+   "versuch": "keiner"
+  },
+  {
+   "key": "lions_mane_extrakt",
+   "name": "Lion's Mane (Hericium) als Extrakt",
+   "ebene": "supplement",
+   "ziel": [
+    "aufmerksamkeit",
+    "stimmung",
+    "schlaf"
+   ],
+   "evidenz": "vorlaeufig",
+   "effekt": "7 kleine RCTs, gemischt. MCI-Studie (30 Pers., 16 Wo.) positiv, Effekt nach Absetzen weg; junge Gesunde: nichts oder schlechter. 2026 (109 Pers., 8 Wo., herstellerfinanziert, preprint): bescheiden bei visueller Aufmerksamkeit/Arbeitsgedaechtnis, Schlaf/Stimmung. ADHS: nichts.",
+   "hinweis": "Kein Standard, Wirkung wenn ueberhaupt nach Wochen. Fuer Wechselversuch zu langsam. Als Pilz in der Pfanne besser.",
+   "versuch": "keiner",
+   "quellen": [
+    "Mori 2009",
+    "Frontiers Nutrition 2025 Akutstudie",
+    "medRxiv 2026 8-Wochen-RCT",
+    "ADDF Cognitive Vitality"
+   ]
+  },
+  {
+   "key": "cordyceps",
+   "name": "Cordyceps",
+   "ebene": "supplement",
+   "ziel": [
+    "ausdauer"
+   ],
+   "evidenz": "vorlaeufig",
+   "effekt": "Kleine, widerspruechliche Studien; etwas bessere Sauerstoffaufnahme bei Aelteren, bei trainierten Jungen nichts.",
+   "versuch": "keiner"
+  },
+  {
+   "key": "chaga",
+   "name": "Chaga",
+   "ebene": "supplement",
+   "ziel": [],
+   "evidenz": "keine",
+   "effekt": "Keine brauchbaren Humanstudien; sehr oxalatreich, Fallberichte zu Nierenschaeden bei Dauergebrauch.",
+   "hinweis": "Nicht empfohlen.",
+   "versuch": "keiner"
+  },
+  {
+   "key": "bitterstoffe",
+   "name": "Bitterstoffe (Artischocke, Enzian, Loewenzahn)",
+   "ebene": "kueche",
+   "ziel": [
+    "darm"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Regen Speichel, Magensaeure, Galle an; Artischocke belegt bei Voellegefuehl/Dyspepsie. 'Leber entgiften' ist Marketing; Mariendistel nur bei Leberkranken belegt.",
+   "hinweis": "NICHT bei Durchfall (Galle im Dickdarm macht Durchfall). Leberwerte normal -> kein Anlass.",
+   "versuch": "keiner"
+  },
+  {
+   "key": "koffein",
+   "name": "Kaffee / Koffein",
+   "ebene": "kueche",
+   "ziel": [
+    "aufmerksamkeit",
+    "energie"
+   ],
+   "evidenz": "mittel",
+   "effekt": "Kurzfristig Aufmerksamkeit; bei ADHS kein Ersatz fuer Stimulanzien.",
+   "hinweis": "Mit Stimulanzien: Wechselwirkung (Puls, Unruhe, Schlaf). Nach 14 Uhr meiden bei Schlafproblemen.",
+   "wechselwirkung": [
+    "methylphenidat",
+    "amphetamine"
+   ],
+   "versuch": "wechsel"
+  },
+  {
+   "key": "omega3",
+   "name": "Omega-3 (EPA-betont)",
+   "ebene": "supplement",
+   "ziel": [
+    "aufmerksamkeit",
+    "stimmung"
+   ],
+   "evidenz": "mittel",
+   "effekt": "22 RCTs (2023): insgesamt kein signifikanter Effekt (SMD 0,16), ab >= 4 Monaten SMD 0,35. Cochrane 2023: wenig bis kein Unterschied. Bei niedrigem Omega-3-Index SMD 0,52, bei normalem 0,03 (7 Studien, low certainty, Kinder).",
+   "dosis": "500-1000 mg EPA/Tag, mindestens 4 Monate",
+   "voraussetzung_labor": {
+    "marker": "omega3_index",
+    "stufe": [
+     "mangel",
+     "grau"
+    ]
+   },
+   "hinweis": "Weder hohe EPA-Dosis noch hohes EPA/DHA-Verhaeltnis machten einen Unterschied. Fettloesliches braucht Fett in derselben Mahlzeit.",
+   "versuch": "vorher_nachher",
+   "dauer_tage": 120,
+   "quellen": [
+    "J Clin Psychiatry 2023 Meta-Analyse",
+    "Cochrane Gillies 2023",
+    "Frontiers Public Health 2026 biomarker-stratifiziert"
+   ]
+  },
+  {
+   "key": "eisen",
+   "name": "Eisen",
+   "ebene": "supplement",
+   "ziel": [
+    "aufmerksamkeit",
+    "energie"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Konofal 2008: 23 Kinder, 80 mg/Tag, 12 Wo., Ferritin < 30. Meta-Analyse 2024 (3 RCTs, 124 Teiln.): Evidenz sehr niedrig, nicht signifikant. Plausibel bei Mangel (Cofaktor Tyrosinhydroxylase -> Dopamin).",
+   "obergrenze": "BfR NEM: 6 mg/Tag; therapeutische Dosen nur aerztlich",
+   "voraussetzung_labor": {
+    "marker": "ferritin",
+    "stufe": [
+     "mangel",
+     "grau"
+    ]
+   },
+   "hinweis": "Ohne Mangel kein Effekt, nicht harmlos (Ueberdosis moeglich). 2 h Abstand zu Zink/Magnesium.",
+   "wechselwirkung": [
+    "zink",
+    "magnesium"
+   ],
+   "versuch": "vorher_nachher",
+   "dauer_tage": 90,
+   "quellen": [
+    "Konofal 2008 Pediatr Neurol",
+    "J Neuropsychiatry Clin Neurosci 2024"
+   ]
+  },
+  {
+   "key": "zink",
+   "name": "Zink",
+   "ebene": "supplement",
+   "ziel": [
+    "aufmerksamkeit"
+   ],
+   "evidenz": "mittel",
+   "effekt": "6 RCTs, 489 Kinder: SMD 0,62 auf Gesamtscore, nichts auf Subskalen, keine Dosis-Wirkung, Sicherheit moderat bis sehr niedrig. 'Nur bei Zinkmangel' ist Interpretation, nicht Befund.",
+   "obergrenze": "BfR NEM: 6,5 mg/Tag",
+   "voraussetzung_labor": {
+    "marker": "zink_serum",
+    "stufe": [
+     "mangel",
+     "grau"
+    ]
+   },
+   "hinweis": "Moduliert Dopamintransporter. 2 h Abstand zu Eisen.",
+   "wechselwirkung": [
+    "eisen"
+   ],
+   "versuch": "vorher_nachher",
+   "dauer_tage": 84,
+   "quellen": [
+    "Crit Rev Food Sci Nutr 2021 Dosis-Wirkung"
+   ]
+  },
+  {
+   "key": "magnesium",
+   "name": "Magnesium (Bisglycinat, abends)",
+   "ebene": "supplement",
+   "ziel": [
+    "kraempfe",
+    "schlaf",
+    "unruhe"
+   ],
+   "evidenz": "schwach",
+   "effekt": "ADHS: niedrigere Werte bei Betroffenen, RCTs klein (Hemamy 2021 mit Vitamin D, Kinder). Muskelkraempfe: Cochrane 2020 - keine wirksame Vorbeugung bei Erwachsenen (mittlere Sicherheit), Belastungskraempfe ungeprueft.",
+   "obergrenze": "BfR NEM: 250 mg/Tag elementar, auf >= 2 Portionen",
+   "voraussetzung_labor": {
+    "marker": "magnesium_vollblut",
+    "stufe": [
+     "mangel",
+     "grau"
+    ],
+    "optional": true
+   },
+   "hinweis": "Bisglycinat = gut resorbiert, darmschonend; ~10-14 % elementares Mg im Bisglycinat. Glycin leicht beruhigend. Durchfall bei 11-37 % (v.a. Oxid/Citrat).",
+   "wechselwirkung": [
+    "eisen",
+    "zink",
+    "antibiotika"
+   ],
+   "versuch": "wechsel",
+   "quellen": [
+    "Cochrane Garrison 2020",
+    "Hemamy 2021 BMC Pediatrics",
+    "BfR 2017/2021"
+   ]
+  },
+  {
+   "key": "vitamin_d",
+   "name": "Vitamin D3",
+   "ebene": "supplement",
+   "ziel": [
+    "stimmung",
+    "aufmerksamkeit"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Mangel korreliert (22 Studien, -6,6 ng/ml bei ADHS). Als Zusatz zu Methylphenidat bei Kindern: SMD 0,39 Gesamtscore, 0,67 Unaufmerksamkeit, nichts auf Hyperaktivitaet (2025). Nur Kinder, nur als Zusatz.",
+   "obergrenze": "BfR NEM: 20 ug (800 IE)/Tag; hoehere Dosen nach Laborwert aerztlich",
+   "voraussetzung_labor": {
+    "marker": "vitamin_d_25oh",
+    "stufe": [
+     "mangel",
+     "grau"
+    ]
+   },
+   "hinweis": "September = Jahreshoch. Jetzt und im Februar messen = Jahreskurve. Fettloeslich.",
+   "versuch": "vorher_nachher",
+   "dauer_tage": 84,
+   "quellen": [
+    "Middle East Curr Psychiatry 2025 Meta-Analyse"
+   ]
+  },
+  {
+   "key": "b12",
+   "name": "Vitamin B12",
+   "ebene": "supplement",
+   "ziel": [
+    "energie",
+    "stimmung"
+   ],
+   "evidenz": "mittel",
+   "effekt": "Bei Mangel: Muedigkeit, Antriebsmangel, gedrueckte Stimmung, Nervenbeschwerden (Kribbeln). Fuer ADHS-Kernsymptome keine Studien.",
+   "voraussetzung_labor": {
+    "marker": "holo_tc",
+    "stufe": [
+     "mangel",
+     "grau"
+    ]
+   },
+   "hinweis": "Serum-B12 im Graubereich (211-544) -> Holo-TC oder Homocystein klaeren. Spirulina (Pseudo-B12) verfaelscht den Serumwert. Darmbeschwerden -> Aufnahme fraglich.",
+   "versuch": "vorher_nachher",
+   "dauer_tage": 90
+  },
+  {
+   "key": "breitspektrum_mikronaehrstoffe",
+   "name": "Breitspektrum-Mikronaehrstoffe (Rucklidge-Formel)",
+   "ebene": "supplement",
+   "ziel": [
+    "stimmung",
+    "unruhe"
+   ],
+   "evidenz": "mittel",
+   "effekt": "Eher emotionale Regulation/Aggression als Kernsymptome (Rucklidge 2018, Kinder; Erwachsenen-RCT 2014).",
+   "hinweis": "Studien schlossen Teilnehmer unter Psychopharmaka aus -> nicht neben Medikation. Teuer, viele Kapseln.",
+   "wechselwirkung": [
+    "methylphenidat",
+    "amphetamine",
+    "atomoxetin"
+   ],
+   "versuch": "vorher_nachher",
+   "dauer_tage": 70,
+   "quellen": [
+    "Rucklidge 2018 JCPP",
+    "Rucklidge 2014 Br J Psychiatry"
+   ]
+  },
+  {
+   "key": "safran",
+   "name": "Safran",
+   "ebene": "supplement",
+   "ziel": [
+    "aufmerksamkeit"
+   ],
+   "evidenz": "vorlaeufig",
+   "effekt": "Eine kleine RCT (Baziar 2019, Kinder) auf Methylphenidat-Niveau, nicht repliziert.",
+   "versuch": "keiner",
+   "quellen": [
+    "Baziar 2019 J Child Adolesc Psychopharmacol"
+   ]
+  },
+  {
+   "key": "l_theanin",
+   "name": "L-Theanin (200 mg)",
+   "ebene": "supplement",
+   "ziel": [
+    "unruhe",
+    "schlaf",
+    "aufmerksamkeit"
+   ],
+   "evidenz": "schwach",
+   "effekt": "31 RCTs (2026): akuter Stress SMD 0,31; Angst uneinheitlich; Reaktionszeit bei 200 mg SMD 0,51 (kurzfristig). Schlaf: wenige Studien, eine bei Jungen mit ADHS positiv.",
+   "dosis": "200 mg; bis 400 mg/Tag ueber 8 Wochen untersucht",
+   "hinweis": "Sicher, keine bekannte Wechselwirkung mit Stimulanzien. Abends bei Rebound-Unruhe. Morgens mit Kaffee = Wachmacher, nicht Beruhigung.",
+   "versuch": "wechsel",
+   "quellen": [
+    "Molecular Psychiatry 2026 Meta-Analyse",
+    "Lyon 2011 Altern Med Rev"
+   ]
+  },
+  {
+   "key": "melatonin",
+   "name": "Melatonin niedrig dosiert, frueh (0,5 mg, 3-5 h vor eigenem Melatoninanstieg)",
+   "ebene": "supplement",
+   "ziel": [
+    "schlaf",
+    "aufmerksamkeit"
+   ],
+   "evidenz": "mittel",
+   "effekt": "PhASE-RCT (49 Erwachsene mit ADHS + verspaeteter Schlafphase): innere Uhr nach vorn, ADHS-Symptome -14 %, Schlafzeiten selbst nicht signifikant verschoben. Einziges Mittel dieser Reihe mit ADHS-Erwachsenenstudie.",
+   "hinweis": "Uhrsteller, kein Schlafmittel: kleine Dosis, frueher Zeitpunkt. 2-5 mg um 23 Uhr ist ein anderes Prinzip. In DE bis 1 mg frei.",
+   "versuch": "wechsel",
+   "quellen": [
+    "van Andel 2022 J Biol Rhythms (PhASE)"
+   ]
+  },
+  {
+   "key": "glycin",
+   "name": "Glycin (3 g abends)",
+   "ebene": "supplement",
+   "ziel": [
+    "schlaf"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Wenige kleine Studien: etwas besserer Schlaf bei 3 g abends.",
+   "hinweis": "Menge in Magnesium-Bisglycinat liegt darunter (Nebeneffekt).",
+   "versuch": "wechsel"
+  },
+  {
+   "key": "lavendeloel_silexan",
+   "name": "Lavendeloel Silexan (80 mg, Apotheke)",
+   "ebene": "supplement",
+   "ziel": [
+    "unruhe",
+    "schlaf"
+   ],
+   "evidenz": "mittel",
+   "effekt": "5 Studien, 1172 Pat. mit Unruhe/Angst, 10 Wochen: kleiner signifikanter Effekt auf Schlaf, groesserer auf Angst. Zugelassenes Arzneimittel.",
+   "hinweis": "Studien fast alle vom Hersteller.",
+   "versuch": "wechsel",
+   "quellen": [
+    "Pharmazeutische Zeitung, Meta-Analyse Silexan/Schlaf"
+   ]
+  },
+  {
+   "key": "fuenf_htp_tryptophan",
+   "name": "5-HTP / Tryptophan",
+   "ebene": "supplement",
+   "ziel": [
+    "stimmung",
+    "schlaf"
+   ],
+   "evidenz": "schwach",
+   "effekt": "ADHS: keine belastbare Studie. Depression: kleine alte Studien. Tryptophan 1-3 g: kleine Effekte auf Schlaf/Stimmung.",
+   "hinweis": "Serotonerg: NICHT neben Atomoxetin, Lisdexamfetamin, SSRI (Serotoninsyndrom). Vor Medikationsstart absetzen - Frist mit Arzt klaeren. 5-HTP: Uebelkeit.",
+   "wechselwirkung": [
+    "atomoxetin",
+    "amphetamine",
+    "ssri"
+   ],
+   "versuch": "keiner"
+  },
+  {
+   "key": "ashwagandha",
+   "name": "Ashwagandha",
+   "ebene": "supplement",
+   "ziel": [
+    "unruhe",
+    "schlaf"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Einige positive Studien zu Stress/Schlaf.",
+   "hinweis": "BfR-Warnung 2024 wegen Leberschaeden. Nicht empfohlen.",
+   "versuch": "keiner"
+  },
+  {
+   "key": "johanniskraut",
+   "name": "Johanniskraut",
+   "ebene": "supplement",
+   "ziel": [
+    "stimmung"
+   ],
+   "evidenz": "stark",
+   "effekt": "Wirksam bei leichter Depression.",
+   "hinweis": "Enzyminduktor mit langer Wechselwirkungsliste - nicht ohne Ruecksprache.",
+   "wechselwirkung": [
+    "viele"
+   ],
+   "versuch": "keiner"
+  },
+  {
+   "key": "spirulina",
+   "name": "Spirulina (frisch oder Pulver)",
+   "ebene": "kueche",
+   "ziel": [
+    "energie"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Eiweiss, Eisen, Beta-Carotin; kleine Studien zu Ausdauer/Blutfetten. Nichts, was Ei und Linsen nicht auch bringen.",
+   "hinweis": "Pseudo-B12 verfaelscht Serum-B12 -> nicht vor Holo-TC, dem Labor sagen. Eigenzucht: Microcystin-Risiko durch Fremdalgen (pH > 10, geschlossen, Mikroskop, bei Farb-/Geruchswechsel verwerfen). Frisch: 3-4 Tage Kuehlschrank.",
+   "versuch": "keiner"
+  },
+  {
+   "key": "koffein_theanin",
+   "name": "Koffein + L-Theanin, Ginkgo, Pycnogenol, Phosphatidylserin",
+   "ebene": "supplement",
+   "ziel": [
+    "aufmerksamkeit"
+   ],
+   "evidenz": "schwach",
+   "effekt": "Einzelstudien, keine Empfehlung (aus der Studienlage-MD).",
+   "versuch": "keiner"
+  },
+  {
+   "key": "methylphenidat",
+   "name": "Methylphenidat",
+   "ebene": "medikament",
+   "ziel": [
+    "aufmerksamkeit"
+   ],
+   "evidenz": "stark",
+   "effekt": "Erwachsene: SMD ~0,5 (Cortese 2018: 0,49; Nourredine 2026: 0,38-0,52 bei 60 mg, steigend ohne klares Plateau, abnehmender Zugewinn ab ~50 mg). Kinder: 0,78; Peak bei ~45 mg (0,89).",
+   "hinweis": "Abbruchrisiko wegen Nebenwirkungen steigt ab ~50 mg deutlich. Dosierung gehoert nicht in die App. Muskelspannung/Kraempfe dokumentierte Nebenwirkung; Appetit gedrueckt.",
+   "quellen": [
+    "Cortese 2018 Lancet Psychiatry",
+    "Nourredine/Cortese 2026 Lancet Psychiatry (docs/2026-06_Lancet-Psychiatry_...pdf)"
+   ]
+  },
+  {
+   "key": "amphetamine",
+   "name": "Amphetamine (Lisdexamfetamin)",
+   "ebene": "medikament",
+   "ziel": [
+    "aufmerksamkeit"
+   ],
+   "evidenz": "stark",
+   "effekt": "Erwachsene: SMD 0,79 (Cortese 2018); Plateau bei ~50 mg/Tag mit SMD 0,74 (Nourredine 2026), darueber kein Zusatznutzen. Kinder: 1,02; Peak bei ~25 mg (1,06).",
+   "hinweis": "Abbruchrisiko steigt linear mit Dosis, ueber Placebo ab ~25 mg (Kinder) / ~50 mg (Erwachsene). Warnhinweis Serotoninsyndrom mit serotonergen Stoffen.",
+   "wechselwirkung": [
+    "fuenf_htp_tryptophan",
+    "koffein"
+   ],
+   "quellen": [
+    "Cortese 2018",
+    "Nourredine 2026"
+   ]
+  },
+  {
+   "key": "atomoxetin",
+   "name": "Atomoxetin",
+   "ebene": "medikament",
+   "ziel": [
+    "aufmerksamkeit"
+   ],
+   "evidenz": "mittel",
+   "effekt": "Erwachsene: SMD 0,45 (Cortese 2018). Keine belastbare Dosis-Wirkung (Nourredine 2026), geringe Effekte, grosse Unsicherheit.",
+   "hinweis": "Serotoninsyndrom-Warnhinweis mit serotonergen Stoffen.",
+   "wechselwirkung": [
+    "fuenf_htp_tryptophan"
+   ]
+  },
+  {
+   "key": "guanfacin",
+   "name": "Guanfacin",
+   "ebene": "medikament",
+   "ziel": [
+    "aufmerksamkeit",
+    "unruhe"
+   ],
+   "evidenz": "mittel",
+   "effekt": "Nur Kinder/Jugendliche: SMD 0,66 bei 4 mg (Nourredine 2026). In DE fuer Erwachsene nicht zugelassen, im Cortese-Abstract fuer Erwachsene nicht ausgewiesen."
+  },
+  {
+   "key": "modafinil",
+   "name": "Modafinil",
+   "ebene": "medikament",
+   "ziel": [
+    "aufmerksamkeit"
+   ],
+   "evidenz": "keine",
+   "effekt": "Erwachsene: kein signifikanter Unterschied zu Placebo (Cortese 2018: 0,16 n.s.; Nourredine 2026: wenig Evidenz)."
+  }
+ ]
+}
