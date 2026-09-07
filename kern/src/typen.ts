@@ -1,23 +1,25 @@
-// Datenvertrag – identisch mit psychologie-tool/DATENMODELL.md (schema_version 1).
+// Datenvertrag – gemeinsam für alle Apps auf diesem Kern.
+// Quelle der Wahrheit: psychologie-tool/DATENMODELL.md (schema_version 1).
 // Alle Sätze sind append-only JSONL-kompatibel; der Browser-Speicher hält sie als Arrays.
+//
+// Was hier steht, gilt für jede App. Was nur eine App braucht (RSD-Episoden bei ADHS,
+// Trinkmenge bei Fit Senior), kommt in deren eigene typen.ts und erweitert die Basis.
 
 export type ISODate = string; // YYYY-MM-DD
+export type HHMM = string; // HH:MM
 
-export interface CheckIn {
+/** Tagescheck-in. Jede App erweitert das um ihre eigenen Skalen. */
+export interface CheckInBasis {
   schema_version: 1;
   datum: ISODate;
   quelle: "self";
   stimmung?: number;
-  reizlast?: number;
-  soziale_energie?: number;
   schlaf_h?: number;
-  rsd_episoden?: number;
-  medikation?: string;
-  krampf?: number;
   darm?: number;
   hunger?: number;
   einschlaf_min?: number;
-  bett_uhrzeit?: string;
+  bett_uhrzeit?: HHMM;
+  medikation?: string;
   einnahmen?: string[];
   freitext?: string;
 }
@@ -60,7 +62,7 @@ export interface Versuch {
   labor_nachher_ab?: ISODate;
 }
 
-// TestResult mit typ "labor" (tests.jsonl)
+/** TestResult mit typ "labor" (tests.jsonl) */
 export interface LaborResult {
   schema_version: 1;
   datum: ISODate;
@@ -70,17 +72,13 @@ export interface LaborResult {
   meta?: { ref?: Record<string, string>; beleg?: string };
 }
 
-// Neu in der App: Mahlzeit (mahlzeiten.jsonl) – Bausteine statt Kalorien.
-export type Baustein =
-  | "gemuese" | "obst" | "eiweiss" | "vollkorn" | "huelsenfruechte" | "milch"
-  | "nuesse" | "fertig" | "suess" | "alkohol" | "koffein" | "pilze" | "sprossen" | "eigenes";
-
-export interface Mahlzeit {
+/** Mahlzeit – Bausteine statt Kalorien. Welche Bausteine es gibt, legt die App fest. */
+export interface MahlzeitBasis<B extends string = string> {
   schema_version: 1;
   datum: ISODate;
-  uhrzeit: string; // HH:MM
-  bausteine: Baustein[];
-  pflanzen?: string[]; // verschiedene Pflanzen (fuer Vielfalt/Woche)
+  uhrzeit: HHMM;
+  bausteine: B[];
+  pflanzen?: string[];
   menge?: "klein" | "normal" | "gross";
   notiz?: string;
 }

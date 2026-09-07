@@ -1,8 +1,12 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
+const kern = fileURLToPath(new URL("../kern/src/index.ts", import.meta.url));
+
 export default defineConfig({
+  resolve: { alias: { "@versorgung/kern": kern } },
   plugins: [
     react(),
     VitePWA({

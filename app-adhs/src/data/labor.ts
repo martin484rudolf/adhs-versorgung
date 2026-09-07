@@ -1,6 +1,6 @@
 // Labor-Registry – identisch mit psychologie-tool/daten/test_typen.json (typ "labor").
 // Stufen sind Orientierung aus der Literatur; der Referenzbereich des Labors hat Vorrang.
-import type { LaborAchse } from "../lib/types";
+import type { LaborAchse } from "@versorgung/kern";
 
 export const LABOR: Record<string, LaborAchse> = {
   ferritin: { label: "Ferritin", einheit: "µg/l", stufen: { mangel_unter: 30, grau_bis: 50 }, hinweis: "ADHS-Literatur diskutiert Graubereich bis 50" },
