@@ -135,6 +135,37 @@ export function gewichtsverlauf(eintraege: CheckIn[]) {
   };
 }
 
+/**
+ * Wadenumfang über die Zeit. Gemessen wird an der dicksten Stelle, im Sitzen,
+ * Knie etwa im rechten Winkel – und immer am selben Bein, sonst vergleicht man Äpfel mit Birnen.
+ *
+ * ZU PRÜFEN: Der Richtwert von 31 cm stammt aus der Sarkopenie-Literatur (er taucht in
+ * Screening-Bögen wie SARC-CalF auf und wird im Zusammenhang mit den EWGSOP-Kriterien
+ * genannt). Vor dem ernsthaften Gebrauch gegen eine benannte Leitlinie absichern –
+ * die Angaben unterscheiden sich je nach Quelle und teils nach Geschlecht.
+ *
+ * Wichtiger als der absolute Wert ist ohnehin die Richtung: Wenn die Wade über Monate
+ * dünner wird, ist das das Signal.
+ */
+export const WADE_RICHTWERT_CM = 31;
+
+export function wadenverlauf(eintraege: CheckIn[]) {
+  const mit = eintraege.filter((e) => typeof e.wade_cm === "number").sort((a, b) => a.datum.localeCompare(b.datum));
+  if (mit.length === 0) return null;
+  const letzt = mit[mit.length - 1];
+  const erst = mit[0];
+  const aktuell = letzt.wade_cm ?? 0;
+  return {
+    aktuell,
+    gemessen: letzt.datum,
+    messungen: mit.length,
+    /** Erst ab der zweiten Messung gibt es eine Richtung. */
+    veraenderung: mit.length > 1 ? Math.round((aktuell - (erst.wade_cm ?? 0)) * 10) / 10 : null,
+    seit: erst.datum,
+    unterRichtwert: aktuell < WADE_RICHTWERT_CM,
+  };
+}
+
 // ---- Bedarfe ----
 export const BEREICHE: { key: Bedarf["bereich"]; label: string; frage: string }[] = [
   { key: "haushalt", label: "Haushalt", frage: "Was im Haushalt fällt schwer?" },

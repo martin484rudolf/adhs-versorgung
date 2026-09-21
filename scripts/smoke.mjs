@@ -50,6 +50,55 @@ try {
       const h2 = await page.locator("h2").allInnerTexts();
       console.log(`   ${tab}: ${h2.slice(0, 3).join(" | ") || "(keine h2)"}`);
     }
+    // ---- Puls: der Simulator, weil hier kein Gurt liegt ----
+    // Die echte Bluetooth-Verbindung kann dieser Test nicht pruefen - nur den Weg davor
+    // und danach: messen, rechnen, speichern, wiederfinden.
+    await page.getByRole("button", { name: "Gurt", exact: false }).first().click();
+    await page.waitForTimeout(200);
+    await page.getByRole("button", { name: "Ohne Gurt ausprobieren" }).click();
+    await page.waitForTimeout(1500);
+    let pulsText = await page.locator("body").innerText();
+    melde(/Simulation/.test(pulsText), "Simulator verbindet sich");
+    melde(/Schläge\/min/.test(pulsText), "Live-Puls erscheint");
+
+    await page.getByRole("button", { name: "Messung starten" }).click();
+    await page.waitForTimeout(4000);
+    await page.getByRole("button", { name: "Messung beenden" }).click();
+    await page.waitForTimeout(300);
+    pulsText = await page.locator("body").innerText();
+    melde(/RMSSD/.test(pulsText), "Kennzahlen werden gerechnet");
+    melde(/Anhaltspunkt, kein Messwert/.test(pulsText), "kurze Messung wird als unsicher gekennzeichnet");
+
+    await page.getByRole("button", { name: "Messung speichern" }).click();
+    await page.waitForTimeout(300);
+    const nachMessung = await page.evaluate(() => localStorage.getItem("adhs-versorgung.v1"));
+    melde(/"typ":"hrv-session"/.test(nachMessung ?? ""), "Messung wird gespeichert");
+    melde(/"rr":\[\d/.test(nachMessung ?? ""), "Rohdaten bleiben erhalten, nicht nur die Kennzahl");
+    melde(/Gespeichert: RMSSD/.test(await page.locator("body").innerText()), "Rueckmeldung nach dem Speichern");
+
+    // Atemuebung: dieselbe Verbindung, andere Anwendung
+    await page.getByRole("button", { name: "Atmen", exact: true }).click();
+    await page.waitForTimeout(300);
+    melde(/bereit/.test(await page.locator("body").innerText()), "Atemuebung ist bereit, ohne neu zu koppeln");
+    // Erst kurz: darunter soll gar nichts gespeichert werden.
+    await page.getByRole("button", { name: "Übung starten" }).click();
+    await page.waitForTimeout(2500);
+    const atemText = await page.locator("body").innerText();
+    melde(/Einatmen|Ausatmen/.test(atemText), "Atemtakt laeuft");
+    melde(/Atemzug/.test(atemText), "Atemzuege werden gezaehlt");
+    melde(/Schlag für Schlag/.test(atemText), "Pulskurve erscheint");
+    await page.getByRole("button", { name: "Beenden" }).click();
+    await page.waitForTimeout(300);
+    melde(/Zu kurz zum Speichern/.test(await page.locator("body").innerText()), "zu kurze Uebung wird nicht gespeichert");
+
+    // Dann lang genug, damit ein voller Atemzug drin ist.
+    await page.getByRole("button", { name: "Übung starten" }).click();
+    await page.waitForTimeout(13000);
+    await page.getByRole("button", { name: "Beenden" }).click();
+    await page.waitForTimeout(300);
+    const nachAtem = await page.evaluate(() => localStorage.getItem("adhs-versorgung.v1"));
+    melde(/"bedingung":"atemuebung"/.test(nachAtem ?? ""), "Atemuebung wird als eigene Bedingung gespeichert");
+
     melde(konsole.length === 0, konsole.length ? `Konsolenfehler: ${konsole.join(" / ")}` : "Konsole sauber");
     await page.close();
   }
@@ -111,6 +160,43 @@ try {
     const text = await page.locator("body").innerText();
     melde(/Quark|Glas Wasser|Muskeln/.test(text), "Rückmeldung erscheint als Vorschlag");
     melde(!/Eher Bremse|Gute Mahlzeit|Okay\./.test(text), "keine Benotung im Text");
+
+    // Wadenumfang: eintragen, Verlauf erscheint, Wert überlebt den Neuladen
+    await page.getByRole("button", { name: "Zurück zum Anfang" }).first().click();
+    await page.getByRole("button", { name: "Wie war der Tag?", exact: false }).first().click();
+    await page.waitForTimeout(250);
+    const wadeFeld = page.locator('input[placeholder="z. B. 34"]');
+    await wadeFeld.fill("29.5");
+    await wadeFeld.blur();
+    await page.waitForTimeout(250);
+    const nachWade = await page.evaluate(() => localStorage.getItem("fit-senior.v1"));
+    melde(/"wade_cm":29\.5/.test(nachWade ?? ""), "Wadenumfang wird gespeichert");
+    const wadeText = await page.locator("body").innerText();
+    melde(/29\.5 cm|29,5 cm/.test(wadeText), "Wadenverlauf erscheint");
+    melde(/Arztbesuch/.test(wadeText), "unter dem Richtwert kommt ein Hinweis – als Gesprächsanlass, nicht als Befund");
+
+    // Hilfe: solange kein Pflegegrad gesetzt ist, heißt es "Was es gibt"
+    await page.getByRole("button", { name: "Zurück zum Anfang" }).first().click();
+    await page.getByRole("button", { name: "Hilfe & Unterstützung", exact: false }).first().click();
+    await page.waitForTimeout(250);
+    await page.getByRole("button", { name: "Was es gibt", exact: true }).click();
+    await page.waitForTimeout(250);
+    let h2 = await page.locator("h2").allInnerTexts();
+    melde(h2.includes("Was es gibt") && !h2.includes("Das steht Ihnen schon zu"), "ohne Pflegegrad: Überblick");
+
+    // Pflegegrad auf "bewilligt" setzen -> die Seite dreht sich um
+    // Pflegegrad ist die erste Leistung der Liste, also gehört der erste "bewilligt"-Knopf zu ihr.
+    await page.getByRole("button", { name: "bewilligt", exact: true }).first().click();
+    await page.waitForTimeout(300);
+    h2 = await page.locator("h2").allInnerTexts();
+    melde(h2.includes("Das steht Ihnen schon zu"), "mit Pflegegrad: was zusteht kommt zuerst");
+    const hilfeText = await page.locator("body").innerText();
+    const posEntlastung = hilfeText.indexOf("Entlastungsbetrag");
+    const posWohngeld = hilfeText.indexOf("Wohngeld");
+    melde(posEntlastung > -1 && posEntlastung < posWohngeld, "Entlastungsbetrag steht vor dem Selteneren");
+    melde(/jeden Monat neu/.test(hilfeText), "was monatlich verfällt, ist als solches markiert");
+    melde((hilfeText.match(/Entlastungsbetrag/g) ?? []).length === 1, "keine Leistung doppelt gelistet");
+    melde(!/geprueft/.test(hilfeText), "keine Datenschlüssel auf den Knöpfen");
 
     melde(konsole.length === 0, konsole.length ? `Konsolenfehler: ${konsole.join(" / ")}` : "Konsole sauber");
     await page.close();

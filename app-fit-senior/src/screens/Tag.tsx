@@ -1,6 +1,6 @@
 import { useDB } from "../lib/speicher";
 import { heutigerEintrag, tagSetzen } from "../lib/tag";
-import { fmt, gewichtsverlauf } from "../lib/logik";
+import { fmt, gewichtsverlauf, wadenverlauf } from "../lib/logik";
 import type { CheckIn } from "../lib/typen";
 import { Card, H2, Label, Muted, Skala, useInputCls } from "@versorgung/kern";
 
@@ -42,6 +42,7 @@ export default function Tag() {
   const inputCls = useInputCls();
   const ci = heutigerEintrag(db);
   const gew = gewichtsverlauf(db.eintraege);
+  const wade = wadenverlauf(db.eintraege);
 
   return (
     <div>
@@ -96,6 +97,21 @@ export default function Tag() {
           placeholder="z. B. 72,5"
         />
 
+        <Label>Wadenumfang in cm</Label>
+        <input
+          inputMode="decimal"
+          defaultValue={ci?.wade_cm ?? ""}
+          onBlur={(e) => {
+            const n = Number(e.target.value.replace(",", "."));
+            tagSetzen({ wade_cm: e.target.value && !Number.isNaN(n) ? n : undefined });
+          }}
+          className={inputCls}
+          placeholder="z. B. 34"
+        />
+        <p className="mt-1 text-base text-slate-500">
+          Mit dem Maßband an der dicksten Stelle, im Sitzen. Alle paar Wochen genügt – immer dasselbe Bein.
+        </p>
+
         <Label>Sonst noch etwas?</Label>
         <input
           defaultValue={ci?.freitext ?? ""}
@@ -104,6 +120,32 @@ export default function Tag() {
         />
         <Muted>Alles freiwillig. Was Sie eintragen, bleibt auf diesem Gerät.</Muted>
       </Card>
+
+      {wade && (
+        <>
+          <H2>Wade</H2>
+          <Card>
+            <p className="text-lg text-slate-300">
+              {wade.aktuell} cm, gemessen {fmt(wade.gemessen)}
+              {wade.veraenderung !== null && (
+                <>
+                  {" "}
+                  · {wade.veraenderung > 0 ? "+" : ""}
+                  {wade.veraenderung} cm seit {fmt(wade.seit)}
+                </>
+              )}
+            </p>
+            {wade.messungen === 1 && (
+              <Muted>Beim nächsten Mal sehen Sie hier, ob sich etwas verändert hat. Darauf kommt es an.</Muted>
+            )}
+            {wade.unterRichtwert && (
+              <p className="mt-2 text-lg text-amber-300">
+                Beim nächsten Arztbesuch wäre die Wade einen Satz wert – zusammen mit dem Eiweiß beim Essen.
+              </p>
+            )}
+          </Card>
+        </>
+      )}
 
       {gew && (
         <>

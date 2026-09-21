@@ -6,4 +6,7 @@ export * from "./labor";
 export * from "./versuche";
 export * from "./ernaehrung";
 export * from "./einnahmen";
+export * from "./puls";
+export * from "./gurt";
+export * from "./atem";
 export * from "./ui";

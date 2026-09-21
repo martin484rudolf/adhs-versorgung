@@ -4,14 +4,16 @@ import Ernaehrung from "./screens/Ernaehrung";
 import Einnahmen from "./screens/Einnahmen";
 import Labor from "./screens/Labor";
 import Stoffe from "./screens/Stoffe";
+import Gurt from "./screens/Gurt";
 import Daten from "./screens/Daten";
 
-type Tab = "heute" | "essen" | "einnahmen" | "labor" | "stoffe" | "daten";
+type Tab = "heute" | "essen" | "einnahmen" | "labor" | "puls" | "stoffe" | "daten";
 const TABS: { key: Tab; label: string; icon: string }[] = [
   { key: "heute", label: "Heute", icon: "☀" },
   { key: "essen", label: "Essen", icon: "🥗" },
   { key: "einnahmen", label: "Einnahmen", icon: "💊" },
   { key: "labor", label: "Labor", icon: "🧪" },
+  { key: "puls", label: "Gurt", icon: "💓" },
   { key: "stoffe", label: "Stoffe", icon: "📚" },
   { key: "daten", label: "Daten", icon: "💾" },
 ];
@@ -29,6 +31,7 @@ export default function App() {
       {tab === "essen" && <Ernaehrung />}
       {tab === "einnahmen" && <Einnahmen key={vorwahl ?? "-"} vorwahl={vorwahl} />}
       {tab === "labor" && <Labor />}
+      {tab === "puls" && <Gurt />}
       {tab === "stoffe" && <Stoffe onEinnahme={(k) => { setVorwahl(k); setTab("einnahmen"); }} />}
       {tab === "daten" && <Daten />}
       <nav className="fixed inset-x-0 bottom-0 border-t border-slate-800 bg-slate-950/95 backdrop-blur" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>

@@ -2,11 +2,11 @@
 schirm: eigenstaendig
 titel: "Fit Senior (PWA / Vercel)"
 status: "🟡"
-status_grund: v0.2 (07.09.) - Navigation auf einen Startbildschirm umgebaut, Ton von Bewertung auf Erinnerung umgestellt, Eintragen ohne Speichern-Knopf. Build und Smoke-Test gruen. Offen: Hilfe-Bereich auf "was steht schon zu" drehen, Leistungsdaten pruefen.
-naechste_aktion: Hilfe-Bereich umdrehen: laufender Pflegegrad, also "was steht zu und verfaellt" statt "wie beantragen" · Leistungsdaten gegen SGB XI / SGB V pruefen · v0.2 dem Vater zeigen und zusehen, wo er haengenbleibt
+status_grund: v0.3 (10.09.) - Wadenumfang mit Verlauf, Hilfe-Bereich dreht sich bei bewilligtem Pflegegrad auf "was steht zu und verfaellt". Build und Smoke-Test gruen (14 Pruefungen). Offen: Wetter-Anregung (wartet auf Entscheidung zur Netzverbindung), Leistungsdaten pruefen.
+naechste_aktion: Antworten der Mutter abwarten (Fragenblatt vom 07.09.) · Leistungsdaten gegen SGB XI / SGB V pruefen, jetzt dringlicher weil die Seite konkret zum Abrufen auffordert · Wetter-Anregung, sobald die Netzfrage entschieden ist · v0.3 dem Vater zeigen
 wartet_auf: martin
 deadline: null
-letzte_aenderung: 2026-09-07
+letzte_aenderung: 2026-09-10
 meta: "React 19 · Vite · Tailwind · PWA · localStorage · Kern @versorgung/kern · beratend, nicht diagnostisch"
 tags: [eigenstaendig, app, react, pwa, vercel, senioren, versorgung, ernaehrung, pflege, lokal-first]
 ---
@@ -28,6 +28,21 @@ selbst gedacht, mit einer Schnittstelle fuer die Absprache mit Angehoerigen und 
   beide Apps dieselben Bausteine nutzen.
 - Gewichtsverlust ueber 5 % wird als Hinweis markiert - das ernsteste Zeichen, das man selbst bemerkt.
 - Bedarfsblatt "Was ich brauche" als Textexport fuer Gespraech oder MD-Begutachtung.
+
+## Stand 10.09.2026 (v0.3) - Wade und "was zusteht"
+- **Wadenumfang** (`wade_cm` im Check-in, Eingabe unter "Wenn Sie moegen"): einer der wenigen
+  Werte, die man selbst mit einem Massband erheben kann und der etwas ueber die Muskeln sagt.
+  Zeigt Richtung und Veraenderung; unter dem Richtwert kommt ein Gespraechsanlass fuer die Praxis,
+  kein Befund. ZU PRUEFEN: Richtwert 31 cm gegen eine benannte Leitlinie absichern
+  (`WADE_RICHTWERT_CM` in logik.ts).
+- **Hilfe-Bereich dreht sich um, sobald der Pflegegrad auf "bewilligt" steht.** Dann zuerst
+  "Das steht Ihnen schon zu" mit den Leistungen, die regelmaessig auflaufen und verfallen
+  (Entlastungsbetrag, Pflegehilfsmittel, Verhinderungs- und Kurzzeitpflege), danach der Rest,
+  ohne Doppelung. Gesteuert ueber `verfaellt` und `brauchtPflegegrad` in leistungen.ts -
+  die App liest den Zustand ab, statt ihn zu erraten. Der Reiter heisst dann "Was mir zusteht".
+- **Statusknoepfe zeigten den Datenschluessel** ("geprueft", ohne Umlaut) auf 18 Karten.
+  Jetzt ueber `STATUS_LABEL` / `BEDARF_LABEL` uebersetzt, "geprueft" heisst "angesehen".
+  Im Screenshot gefunden, nicht im Test - der Smoke-Test prueft es jetzt mit.
 
 ## Stand 07.09.2026 (v0.2) - Navigation und Ton
 - **Ein Startbildschirm statt Reiterleiste.** Trinken direkt dort (haeufigste Handlung, kein Umweg),

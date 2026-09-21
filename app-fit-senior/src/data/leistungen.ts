@@ -18,6 +18,16 @@ export interface Leistungsdef {
   /** Zum Nachprüfen – für die Pflege dieser Datei, nicht für die Oberfläche. */
   quelle: string;
   bereich: "pflege" | "gesundheit" | "geld" | "wohnen" | "vorsorge";
+  /**
+   * Läuft regelmäßig auf und verfällt, wenn niemand es abruft. Das sind die Leistungen,
+   * die bei bestehendem Pflegegrad am häufigsten liegen bleiben – deshalb stehen sie
+   * in der Oberfläche oben, sobald ein Pflegegrad bewilligt ist.
+   * ZU PRÜFEN: Ob und wie lange sich ein nicht genutzter Betrag übertragen lässt,
+   * unterscheidet sich je Leistung. Vor Gebrauch gegen SGB XI absichern.
+   */
+  verfaellt?: "monatlich" | "jaehrlich";
+  /** Braucht einen bewilligten Pflegegrad. */
+  brauchtPflegegrad?: boolean;
 }
 
 export const LEISTUNGEN: Leistungsdef[] = [
@@ -40,6 +50,7 @@ export const LEISTUNGEN: Leistungsdef[] = [
     voraussetzung: "Pflegegrad 2 oder höher, Pflege zu Hause.",
     quelle: "SGB XI",
     bereich: "pflege",
+    brauchtPflegegrad: true,
   },
   {
     key: "pflegesachleistung",
@@ -50,6 +61,7 @@ export const LEISTUNGEN: Leistungsdef[] = [
     hinweis: "Lässt sich mit Pflegegeld kombinieren (Kombinationsleistung).",
     quelle: "SGB XI",
     bereich: "pflege",
+    brauchtPflegegrad: true,
   },
   {
     key: "entlastungsbetrag",
@@ -60,6 +72,8 @@ export const LEISTUNGEN: Leistungsdef[] = [
     hinweis: "Verfällt, wenn er nicht genutzt wird. Wird oft übersehen.",
     quelle: "SGB XI § 45b",
     bereich: "pflege",
+    verfaellt: "monatlich",
+    brauchtPflegegrad: true,
   },
   {
     key: "verhinderungspflege",
@@ -69,6 +83,8 @@ export const LEISTUNGEN: Leistungsdef[] = [
     voraussetzung: "Pflegegrad 2 oder höher.",
     quelle: "SGB XI",
     bereich: "pflege",
+    verfaellt: "jaehrlich",
+    brauchtPflegegrad: true,
   },
   {
     key: "kurzzeitpflege",
@@ -78,6 +94,8 @@ export const LEISTUNGEN: Leistungsdef[] = [
     voraussetzung: "Pflegegrad 2 oder höher.",
     quelle: "SGB XI",
     bereich: "pflege",
+    verfaellt: "jaehrlich",
+    brauchtPflegegrad: true,
   },
   {
     key: "tagespflege",
@@ -87,6 +105,7 @@ export const LEISTUNGEN: Leistungsdef[] = [
     voraussetzung: "Pflegegrad 2 oder höher.",
     quelle: "SGB XI",
     bereich: "pflege",
+    brauchtPflegegrad: true,
   },
   {
     key: "pflegehilfsmittel",
@@ -96,6 +115,8 @@ export const LEISTUNGEN: Leistungsdef[] = [
     voraussetzung: "Pflegegrad 1 oder höher, Pflege zu Hause.",
     quelle: "SGB XI § 40",
     bereich: "pflege",
+    verfaellt: "monatlich",
+    brauchtPflegegrad: true,
   },
   {
     key: "wohnumfeld",
@@ -106,6 +127,7 @@ export const LEISTUNGEN: Leistungsdef[] = [
     hinweis: "Der häufigste Fehler: erst bauen, dann fragen.",
     quelle: "SGB XI § 40 Abs. 4",
     bereich: "wohnen",
+    brauchtPflegegrad: true,
   },
   {
     key: "hausnotruf",
@@ -115,6 +137,7 @@ export const LEISTUNGEN: Leistungsdef[] = [
     voraussetzung: "Pflegegrad und überwiegend allein lebend.",
     quelle: "SGB XI § 40",
     bereich: "wohnen",
+    brauchtPflegegrad: true,
   },
   {
     key: "haeusliche_krankenpflege",

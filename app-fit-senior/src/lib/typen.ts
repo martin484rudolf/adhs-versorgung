@@ -23,6 +23,12 @@ export interface CheckIn extends CheckInBasis {
   schmerz?: number;
   /** Gewicht in kg, wenn gewogen – ungewollter Verlust ist das wichtigste Alarmzeichen. */
   gewicht_kg?: number;
+  /**
+   * Wadenumfang in cm, an der dicksten Stelle im Sitzen gemessen.
+   * Einer der wenigen Werte, die man selbst mit einem Maßband erheben kann und die
+   * etwas aussagen: er dient als Anhaltspunkt für die Muskelmasse.
+   */
+  wade_cm?: number;
 }
 
 export type Baustein =

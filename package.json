@@ -14,6 +14,7 @@
     "build:adhs": "npm run build -w adhs-versorgung",
     "build:senior": "npm run build -w fit-senior",
     "build": "npm run build:adhs && npm run build:senior",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "test:puls": "node --test scripts/puls.test.mjs"
   }
 }

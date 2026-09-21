@@ -1,11 +1,30 @@
 import { useState } from "react";
 import { append, download, heute, replaceAll, useDB } from "../lib/speicher";
 import { BEREICHE, DRINGLICHKEIT, bedarfeSortiert, fmt, neueId } from "../lib/logik";
-import { BEREICH_LABEL, LEISTUNGEN, leistung } from "../data/leistungen";
+import { BEREICH_LABEL, LEISTUNGEN, leistung, type Leistungsdef } from "../data/leistungen";
 import type { Bedarf, Leistung } from "../lib/typen";
 import { Btn, Card, Chip, H2, Label, Muted, Pill, useInputCls } from "@versorgung/kern";
 
 type Ansicht = "bedarf" | "zusteht";
+
+/**
+ * Schlüssel sind zum Speichern da, nicht zum Lesen. "geprueft" stand vorher wörtlich
+ * auf dem Knopf – ohne Umlaut und in einer Sprache, die niemand spricht.
+ */
+const STATUS_LABEL: Record<Leistung["status"], string> = {
+  unbekannt: "offen",
+  geprueft: "angesehen",
+  beantragt: "beantragt",
+  bewilligt: "bewilligt",
+  abgelehnt: "abgelehnt",
+};
+
+const BEDARF_LABEL: Record<Bedarf["status"], string> = {
+  offen: "offen",
+  besprochen: "besprochen",
+  beantragt: "beantragt",
+  erledigt: "erledigt",
+};
 
 /**
  * Bedarfe erfassen. Der Gedanke dahinter: Beim Begutachtungstermin und im Gespräch
@@ -78,6 +97,48 @@ function BedarfForm({ onFertig }: { onFertig: () => void }) {
   );
 }
 
+/** Eine Leistung mit dem Stand, den man selbst gesetzt hat. */
+function LeistungKarte({
+  l,
+  status,
+  onStatus,
+}: {
+  l: Leistungsdef;
+  status: Leistung["status"];
+  onStatus: (s: Leistung["status"]) => void;
+}) {
+  return (
+    <Card className="mt-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="text-lg font-semibold text-slate-100">{l.name}</span>
+        <span className="flex flex-wrap gap-2">
+          {l.verfaellt && <Pill kind="warn">{l.verfaellt === "monatlich" ? "jeden Monat neu" : "jedes Jahr neu"}</Pill>}
+          {status !== "unbekannt" && (
+            <Pill kind={status === "bewilligt" ? "gut" : status === "abgelehnt" ? "rot" : "warn"}>{STATUS_LABEL[status]}</Pill>
+          )}
+        </span>
+      </div>
+      <p className="mt-2 text-lg text-slate-300">{l.wofuer}</p>
+      <p className="mt-2 text-lg text-slate-400">
+        <span className="text-slate-500">Wo: </span>
+        {l.wo}
+      </p>
+      <p className="mt-1 text-lg text-slate-400">
+        <span className="text-slate-500">Voraussetzung: </span>
+        {l.voraussetzung}
+      </p>
+      {l.hinweis && <p className="mt-2 text-lg text-amber-300">{l.hinweis}</p>}
+      <div className="mt-3 flex flex-wrap gap-2">
+        {(["geprueft", "beantragt", "bewilligt", "abgelehnt"] as const).map((x) => (
+          <Chip key={x} on={status === x} onClick={() => onStatus(status === x ? "unbekannt" : x)}>
+            {STATUS_LABEL[x]}
+          </Chip>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
 export default function Versorgung() {
   const db = useDB();
   const [ansicht, setAnsicht] = useState<Ansicht>("bedarf");
@@ -88,6 +149,11 @@ export default function Versorgung() {
     replaceAll({ bedarfe: db.bedarfe.map((b) => (b.id === id ? { ...b, status } : b)) });
 
   const leistungStatus = (key: string) => db.leistungen.filter((l) => l.key === key).at(-1)?.status ?? "unbekannt";
+
+  // Läuft ein Pflegegrad, dreht sich die Seite um: erst was zusteht, dann der Rest.
+  const pflegegradLaeuft = leistungStatus("pflegegrad") === "bewilligt";
+  const laufende = pflegegradLaeuft ? LEISTUNGEN.filter((l) => l.verfaellt) : [];
+  const uebrige = LEISTUNGEN.filter((l) => !laufende.includes(l));
 
   const leistungSetzen = (key: string, status: Leistung["status"]) => {
     const l: Leistung = { schema_version: 1, id: neueId(), datum: heute(), key, status };
@@ -132,7 +198,7 @@ export default function Versorgung() {
           Was ich brauche
         </Chip>
         <Chip on={ansicht === "zusteht"} onClick={() => setAnsicht("zusteht")}>
-          Was es gibt
+          {pflegegradLaeuft ? "Was mir zusteht" : "Was es gibt"}
         </Chip>
       </div>
 
@@ -170,7 +236,7 @@ export default function Versorgung() {
                     <div className="mt-2 flex flex-wrap gap-2">
                       {(["offen", "besprochen", "beantragt", "erledigt"] as const).map((s) => (
                         <Chip key={s} on={b.status === s} onClick={() => statusSetzen(b.id, s)}>
-                          {s}
+                          {BEDARF_LABEL[s]}
                         </Chip>
                       ))}
                     </div>
@@ -193,52 +259,54 @@ export default function Versorgung() {
         </>
       ) : (
         <>
-          <H2>Was es gibt</H2>
-          <Card>
-            <Muted>
-              Überblick, keine Rechtsauskunft: Beträge stehen bewusst nirgends, weil sie sich ändern. Wer sich
-              durchfragen will, ruft die Pflegeberatung an – die ist kostenlos und unabhängig.
-            </Muted>
-          </Card>
+          {/*
+            Bei bestehendem Pflegegrad ist "wie beantrage ich" die falsche Frage.
+            Dann zählt: was läuft schon auf und bleibt ungenutzt liegen.
+            Die App entscheidet das nicht selbst, sondern liest es am gesetzten Stand ab.
+          */}
+          {pflegegradLaeuft ? (
+            <>
+              <H2>Das steht Ihnen schon zu</H2>
+              <Card>
+                <p className="text-lg text-slate-300">
+                  Der Pflegegrad ist bewilligt. Diese Leistungen laufen von allein weiter auf – wer sie nicht
+                  abruft, verschenkt sie. Sie müssen dafür nichts neu beantragen.
+                </p>
+                <Muted>
+                  Wie viel es ist und ob sich Nicht­genutztes übertragen lässt, sagt Ihnen die Pflegekasse. Die
+                  Pflegeberatung ist kostenlos und hilft beim Abrufen.
+                </Muted>
+              </Card>
+              {laufende.map((l) => (
+                <LeistungKarte key={l.key} l={l} status={leistungStatus(l.key)} onStatus={(x) => leistungSetzen(l.key, x)} />
+              ))}
+            </>
+          ) : (
+            <>
+              <H2>Was es gibt</H2>
+              <Card>
+                <Muted>
+                  Überblick, keine Rechtsauskunft: Beträge stehen bewusst nirgends, weil sie sich ändern. Wer sich
+                  durchfragen will, ruft die Pflegeberatung an – die ist kostenlos und unabhängig.
+                </Muted>
+              </Card>
+            </>
+          )}
+
           {(Object.keys(BEREICH_LABEL) as (keyof typeof BEREICH_LABEL)[]).map((bereich) => {
-            const meine = LEISTUNGEN.filter((l) => l.bereich === bereich);
+            // Was oben schon steht, kommt unten nicht noch einmal.
+            const meine = uebrige.filter((l) => l.bereich === bereich);
             if (meine.length === 0) return null;
             return (
               <div key={bereich}>
                 <H2>{BEREICH_LABEL[bereich]}</H2>
-                {meine.map((l) => {
-                  const s = leistungStatus(l.key);
-                  return (
-                    <Card key={l.key} className="mt-2">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-lg font-semibold text-slate-100">{l.name}</span>
-                        {s !== "unbekannt" && (
-                          <Pill kind={s === "bewilligt" ? "gut" : s === "abgelehnt" ? "rot" : "warn"}>{s}</Pill>
-                        )}
-                      </div>
-                      <p className="mt-2 text-lg text-slate-300">{l.wofuer}</p>
-                      <p className="mt-2 text-lg text-slate-400">
-                        <span className="text-slate-500">Wo: </span>
-                        {l.wo}
-                      </p>
-                      <p className="mt-1 text-lg text-slate-400">
-                        <span className="text-slate-500">Voraussetzung: </span>
-                        {l.voraussetzung}
-                      </p>
-                      {l.hinweis && <p className="mt-2 text-lg text-amber-300">{l.hinweis}</p>}
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {(["geprueft", "beantragt", "bewilligt", "abgelehnt"] as const).map((x) => (
-                          <Chip key={x} on={s === x} onClick={() => leistungSetzen(l.key, s === x ? "unbekannt" : x)}>
-                            {x}
-                          </Chip>
-                        ))}
-                      </div>
-                    </Card>
-                  );
-                })}
+                {meine.map((l) => (
+                  <LeistungKarte key={l.key} l={l} status={leistungStatus(l.key)} onStatus={(x) => leistungSetzen(l.key, x)} />
+                ))}
               </div>
             );
           })}
+
           <Card className="mt-4">
             <Muted>
               Quellenstand ungeprüft – die Angaben stammen aus allgemeinem Wissen und sind noch nicht gegen SGB XI, SGB V
