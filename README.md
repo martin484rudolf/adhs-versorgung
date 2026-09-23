@@ -47,9 +47,29 @@ sich auf demselben Gerät nicht.
 
 ## Deploy
 
-Vercel, ein Projekt je App, beide auf dieses Repo:
-Root Directory `app-adhs` beziehungsweise `app-fit-senior`, dazu **Include source files outside of
-the Root Directory** aktivieren – sonst fehlt `kern/`. Framework Vite, Build `npm run build`, Output `dist`.
+Live:
+- ADHS-Versorgung: https://adhs-versorgung.vercel.app
+- Fit Senior: https://fit-senior.vercel.app
+
+Deployt wird **aus dem Wurzelverzeichnis**, nicht aus dem App-Ordner. Der Grund: Vercel lädt nur
+hoch, was unter dem Deploy-Verzeichnis liegt – aus `app-adhs/` heraus fehlte `kern/`, und der Build
+bricht ab. Welche App gebaut wird, steht in einer eigenen Konfigurationsdatei je App:
+
+```
+vercel link --yes --project adhs-versorgung
+vercel --prod --local-config vercel.adhs.json
+
+vercel link --yes --project fit-senior
+vercel --prod --local-config vercel.senior.json
+```
+
+Das `vercel link` davor ist nötig, weil `.vercel/project.json` den Ordner an genau ein Projekt
+bindet – vor jedem Deploy also auf das richtige umschalten.
+
+Die Sicherheits-Header (noindex, Frame-Options, Referrer-Policy) stehen in beiden Wurzel-Konfigurationen;
+die `vercel.json` in den App-Ordnern greift bei diesem Weg **nicht** und bleibt nur für einen
+möglichen Dashboard-Import liegen.
+
 Keine `Co-Authored-By:`-Zeile in Commits (Vercel Hobby blockt sonst).
 
 ## Für beide Äste gilt
