@@ -2,8 +2,8 @@
 schirm: eigenstaendig
 titel: "Versorgung (Monorepo: ADHS-Versorgung + Fit Senior)"
 status: "🟢"
-status_grund: Monorepo gebaut, beide Apps laufen (271 Tests in 800volt-Parallele, hier: 18 Puls-Tests + Build grün). Vercel-Deploy der PR-Branch-Deploys schlug fehl — Ursache: README beschrieb CLI-Workflow (--local-config), der bei Git-Integration nicht greift. Fix in Arbeit (Root-vercel.json + README-Korrektur).
-naechste_aktion: PR #1 reviewen und mergen · danach Vercel-Projekt-Einstellungen prüfen (Build/Output: build:adhs→app-adhs/dist, build:senior→app-fit-senior/dist, Root Directory=/) · Sicherheits-Header in Projekt-Einstellungen eintragen · Smoke-Test lokal (Chromium fehlt in Sandbox)
+status_grund: Monorepo gebaut, beide Apps laufen (18 Puls-Tests + Build grün). Vercel-Deploys schlagen fehl — Ursache: Vercel findet im Root kein Framework (workspaces-Root ohne vite). Lösung: Root Directory in Vercel auf app-adhs/ bzw. app-fit-senior/ setzen + 'Include source files outside Root' aktivieren.
+naechste_aktion: PR #1 reviewen und mergen · Vercel-Dashboard: Root Directory=app-adhs/ (Projekt adhs-versorgung) bzw. app-fit-senior/ (Projekt fit-senior), 'Include source files outside of the Root Directory' aktivieren · Smoke-Test lokal (Chromium fehlt in Sandbox)
 wartet_auf: martin (Vercel-Projekt-Einstellungen, Bot-Zugang)
 deadline: null
 letzte_aenderung: 2026-10-25
@@ -36,13 +36,14 @@ scripts/smoke.mjs
 
 ## Naechste Schritte
 1. PR #1 mergen (Monorepo + Fit Senior).
-2. Vercel: zwei Projekte auf dasselbe Repo, Root Directory = `/` (Repo-Wurzel).
-   Build/Output in den Projekt-Einstellungen: `build:adhs` → `app-adhs/dist`,
-   `build:senior` → `app-fit-senior/dist`. Ohne Wurzel als Root Directory fehlt
-   `kern/` und der Build bricht ab.
-3. Sicherheits-Header (noindex etc.) in den Projekt-Einstellungen unter
-   Settings → Headers eintragen — die App-vercel.json greifen bei Root-Deploy nicht.
-4. Erst dann inhaltlich weiter (siehe die NEXT.md der beiden Aeste).
+2. Vercel-Dashboard: zwei Projekte, jedes mit Root Directory auf den App-Ordner:
+   - Projekt `adhs-versorgung`: Root Directory = `app-adhs/`
+   - Projekt `fit-senior`: Root Directory = `app-fit-senior/`
+   - Beides: "Include source files outside of the Root Directory" aktivieren
+     (sonst fehlt `kern/` — Vite-Alias zeigt auf `../kern/src/index.ts`)
+   - Vercel erkennt Vite automatisch, baut `npm run build`, Output `dist/`
+   - Die `vercel.json` in den App-Ordnern greifen und setzen die Header
+3. Erst dann inhaltlich weiter (siehe die NEXT.md der beiden Aeste).
 
 ## Aufpassen
 - Keine `Co-Authored-By:`-Zeile in Commits - Vercel Hobby blockt sonst.
