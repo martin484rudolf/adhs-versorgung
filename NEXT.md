@@ -2,11 +2,11 @@
 schirm: eigenstaendig
 titel: "Versorgung (Monorepo: ADHS-Versorgung + Fit Senior)"
 status: "🟢"
-status_grund: Monorepo am 07.09. aufgebaut, gemeinsamer Kern extrahiert, beide Apps bauen und laufen (Smoke-Test gruen). Noch nicht deployt, noch kein GitHub-Repo.
-naechste_aktion: GitHub-Repo versorgung anlegen und pushen · in Vercel zwei Projekte anlegen (Root Directory app-adhs bzw. app-fit-senior, "Include source files outside of the Root Directory" aktivieren)
-wartet_auf: martin
+status_grund: Monorepo gebaut, beide Apps laufen (271 Tests in 800volt-Parallele, hier: 18 Puls-Tests + Build grün). Vercel-Deploy der PR-Branch-Deploys schlug fehl — Ursache: README beschrieb CLI-Workflow (--local-config), der bei Git-Integration nicht greift. Fix in Arbeit (Root-vercel.json + README-Korrektur).
+naechste_aktion: PR #1 reviewen und mergen · danach Vercel-Projekt-Einstellungen prüfen (Build/Output: build:adhs→app-adhs/dist, build:senior→app-fit-senior/dist, Root Directory=/) · Sicherheits-Header in Projekt-Einstellungen eintragen · Smoke-Test lokal (Chromium fehlt in Sandbox)
+wartet_auf: martin (Vercel-Projekt-Einstellungen, Bot-Zugang)
 deadline: null
-letzte_aenderung: 2026-09-07
+letzte_aenderung: 2026-10-25
 meta: "npm workspaces · React 19 · Vite · Tailwind · PWA · localStorage · Datenvertrag psychologie-tool schema_version 1"
 tags: [eigenstaendig, monorepo, app, react, pwa, vercel, versorgung, lokal-first]
 ---
@@ -35,10 +35,14 @@ scripts/smoke.mjs
 - `npm run smoke` klickt beide Apps im Chromium durch: alle Tabs, Persistenz, Rueckmeldung.
 
 ## Naechste Schritte
-1. GitHub-Repo `versorgung` anlegen, pushen.
-2. Vercel: zwei Projekte auf dasselbe Repo. Wichtig - ohne "Include source files outside of the
-   Root Directory" fehlt `kern/` und der Build bricht ab.
-3. Erst dann inhaltlich weiter (siehe die NEXT.md der beiden Aeste).
+1. PR #1 mergen (Monorepo + Fit Senior).
+2. Vercel: zwei Projekte auf dasselbe Repo, Root Directory = `/` (Repo-Wurzel).
+   Build/Output in den Projekt-Einstellungen: `build:adhs` → `app-adhs/dist`,
+   `build:senior` → `app-fit-senior/dist`. Ohne Wurzel als Root Directory fehlt
+   `kern/` und der Build bricht ab.
+3. Sicherheits-Header (noindex etc.) in den Projekt-Einstellungen unter
+   Settings → Headers eintragen — die App-vercel.json greifen bei Root-Deploy nicht.
+4. Erst dann inhaltlich weiter (siehe die NEXT.md der beiden Aeste).
 
 ## Aufpassen
 - Keine `Co-Authored-By:`-Zeile in Commits - Vercel Hobby blockt sonst.

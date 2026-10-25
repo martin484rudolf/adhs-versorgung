@@ -51,24 +51,31 @@ Live:
 - ADHS-Versorgung: https://adhs-versorgung.vercel.app
 - Fit Senior: https://fit-senior.vercel.app
 
-Deployt wird **aus dem Wurzelverzeichnis**, nicht aus dem App-Ordner. Der Grund: Vercel lädt nur
-hoch, was unter dem Deploy-Verzeichnis liegt – aus `app-adhs/` heraus fehlte `kern/`, und der Build
-bricht ab. Welche App gebaut wird, steht in einer eigenen Konfigurationsdatei je App:
+Beide Apps deployen **automatisch bei jedem Push** — das Vercel-Projekt ist mit dem
+Git-Repo verbunden (Git-Integration), Root Directory ist das Repo-Wurzelverzeichnis.
 
-```
-vercel link --yes --project adhs-versorgung
-vercel --prod --local-config vercel.adhs.json
+**Wichtig:** Bei Git-Integration liest Vercel die Konfiguration aus `vercel.json` im
+Root — **nicht** aus `--local-config` (das gilt nur für CLI-Deploys ohne Git).
+Die frühere README beschrieb einen CLI-Workflow (`vercel --prod --local-config
+vercel.adhs.json`), der mit Git-Integration nie gegriffen hat; die Deploys liefen
+über die Projekt-Einstellungen im Dashboard.
 
-vercel link --yes --project fit-senior
-vercel --prod --local-config vercel.senior.json
-```
+Wie es jetzt läuft:
 
-Das `vercel link` davor ist nötig, weil `.vercel/project.json` den Ordner an genau ein Projekt
-bindet – vor jedem Deploy also auf das richtige umschalten.
+- Eine `vercel.json` im Root, `buildCommand` und `outputDirectory` stehen in den
+  **Vercel-Projekt-Einstellungen** (Settings → General → Build & Output):
+  - Projekt `adhs-versorgung`: Build `npm run build:adhs`, Output `app-adhs/dist`
+  - Projekt `fit-senior`: Build `npm run build:senior`, Output `app-fit-senior/dist`
+- Die Sicherheits-Header (noindex, Frame-Options, Referrer-Policy) stehen in den
+  App-eigenen `vercel.json`-Dateien (`app-adhs/vercel.json`, `app-fit-senior/vercel.json`)
+  und greifen **nicht** bei Root-Deploy — sie müssen in den Projekt-Einstellungen
+  unter Settings → Headers eingetragen werden, oder die Root-`vercel.json` trägt sie.
+- Aus dem Wurzelverzeichnis deployen, nicht aus dem App-Ordner: Vercel lädt nur hoch,
+  was unter dem Deploy-Verzeichnis liegt — aus `app-adhs/` heraus fehlte `kern/`, und
+  der Build bricht ab. Deshalb: Root Directory = `/`, Build/Output pro Projekt setzen.
 
-Die Sicherheits-Header (noindex, Frame-Options, Referrer-Policy) stehen in beiden Wurzel-Konfigurationen;
-die `vercel.json` in den App-Ordnern greift bei diesem Weg **nicht** und bleibt nur für einen
-möglichen Dashboard-Import liegen.
+Die Dateien `vercel.adhs.json` und `vercel.senior.json` im Root bleiben als
+Referenz für einen möglichen CLI-Deploy ohne Git-Integration liegen.
 
 Keine `Co-Authored-By:`-Zeile in Commits (Vercel Hobby blockt sonst).
 
