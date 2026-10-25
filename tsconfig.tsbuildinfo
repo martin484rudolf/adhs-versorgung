@@ -1,1 +1,0 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/ui.tsx","./src/data/labor.ts","./src/lib/logik.ts","./src/lib/store.ts","./src/lib/types.ts","./src/screens/Daten.tsx","./src/screens/Einnahmen.tsx","./src/screens/Ernaehrung.tsx","./src/screens/Heute.tsx","./src/screens/Labor.tsx","./src/screens/Stoffe.tsx"],"version":"5.9.3"}

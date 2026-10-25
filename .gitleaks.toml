@@ -1,0 +1,15 @@
+title = "gitleaks config — adhs-versorgung"
+
+# False-Positives: localStorage-Schlüssel sind keine Secrets
+[allowlist]
+  description = "Bekannte False-Positives"
+  regexes = [
+    # localStorage-Schlüssel (z.B. schluessel: "adhs-versorgung.v1")
+    '''schluessel:\s*"[a-z0-9.-]+"''',
+    '''key:\s*"[a-z0-9.-]+"''',
+  ]
+  paths = [
+    '''app-adhs/src/lib/store\.ts''',
+    '''app-fit-senior/src/lib/speicher\.ts''',
+    '''kern/src/speicher\.ts''',
+  ]

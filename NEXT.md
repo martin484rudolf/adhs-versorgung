@@ -1,34 +1,50 @@
 ---
 schirm: eigenstaendig
-titel: "ADHS-Versorgung (PWA / Vercel)"
+titel: "Versorgung (Monorepo: ADHS-Versorgung + Fit Senior)"
 status: "🟢"
-status_grund: v0.1 gebaut und getestet 06.09. - Heute (Versuch, Check-in, Mahlzeit), Essen (Woche, Pflanzenvielfalt, 3-Tage-Export), Einnahmen + Versuche, Labor (Dreistufen), Stoffe mit Stimmungsfilter und Labor-Tor, Daten (JSONL-Export/Import). Noch nicht deployt.
-naechste_aktion: GitHub-Repo adhs-versorgung anlegen, pushen, in Vercel importieren (Vite, dist) · V001 Magnesium ab 07.09. in der App anlegen (oder versuche.jsonl aus dem Python-Tool importieren) · Ernaehrungstagebuch 3 Tage fuer InnerBuddies rekonstruieren
-wartet_auf: martin
+status_grund: Monorepo gebaut, beide Apps laufen (18 Puls-Tests + Build grün). Vercel-Deploys schlagen fehl — Ursache: Vercel findet im Root kein Framework (workspaces-Root ohne vite). Lösung: Root Directory in Vercel auf app-adhs/ bzw. app-fit-senior/ setzen + 'Include source files outside Root' aktivieren.
+naechste_aktion: PR #1 reviewen und mergen · Vercel-Dashboard: Root Directory=app-adhs/ (Projekt adhs-versorgung) bzw. app-fit-senior/ (Projekt fit-senior), 'Include source files outside of the Root Directory' aktivieren · Smoke-Test lokal (Chromium fehlt in Sandbox)
+wartet_auf: martin (Vercel-Projekt-Einstellungen, Bot-Zugang)
 deadline: null
-letzte_aenderung: 2026-09-06
-meta: "React 19 · Vite · Tailwind · PWA · localStorage · Datenvertrag psychologie-tool · beratend, nicht diagnostisch"
-tags: [eigenstaendig, app, react, pwa, vercel, adhs, versorgung, ernaehrung, lokal-first]
+letzte_aenderung: 2026-10-25
+meta: "npm workspaces · React 19 · Vite · Tailwind · PWA · localStorage · Datenvertrag psychologie-tool schema_version 1"
+tags: [eigenstaendig, monorepo, app, react, pwa, vercel, versorgung, lokal-first]
 ---
 
-# ADHS-Versorgung (PWA)
+# Versorgung
 
-Vercel-Version des Moduls versorgung (psychologie-tool/module_versorgung). Gleiche Daten, gleicher Vertrag, im Browser.
+Ein Stamm, zwei Aeste. Was beide Apps gleich machen, liegt genau einmal in `kern/`.
+Was nur eine betrifft - welche Laborwerte, welche Bausteine, welche Fragen - bleibt bei ihr.
 
-## Stand 06.09.2026
-- Gebaut mit `npm run build` (tsc + vite, 0 Fehler), Smoke-Test im Chromium (Einnahme, Versuch, Check-in, Mahlzeit, Labor, Stoffe-Filter, Persistenz nach Reload) ohne Konsolenfehler.
-- Bausteine statt Kalorien: 14 Chips, Sofort-Rueckmeldung nach jeder Mahlzeit (Eiweiss? Mikrobiom-Futter? Koffein nach 14 Uhr?), Woche als Balken je Ziel, Pflanzenvielfalt/30, Essensluecke > 6 h.
-- Stimmungsfilter "Wie geht es dir gerade?" -> Stoffe nach Ziel, Lebensfuehrung/Kueche zuerst; Supplements zeigen ihr Labor-Tor (Marker, Wert, Stufe, Darm-Vorbehalt); Knopf "Einnahme / Versuch anlegen" springt vorbelegt in den Einnahmen-Bildschirm.
-- Ohne Foto, ohne Pflicht: alles ausser Bausteinen ist optional (Martin: je einfacher die Huerde, desto eher erledigt).
+```
+kern/            Datenvertrag, Speicher, Labor-Stufen, Versuche, Ernaehrung, Oberflaeche
+app-adhs/        ADHS-Versorgung (NEXT.md dort)
+app-fit-senior/  Fit Senior (NEXT.md dort)
+scripts/smoke.mjs
+```
 
-## Offen (v0.2)
-- Leckere Gerichte + Meal Prep anbieten (Anschluss an mealprep-skill), passend zu den Bausteinen, die diese Woche fehlen.
-- Essengehen: Einschaetzung "was ist das, wie gut wird es sein" aus Notiz + Bausteinen (heute nur Sofort-Rueckmeldung).
-- Ernaehrungs-Doku im Taschenformat fuer Fachkraefte (heute: 3-Tage-Textexport) -> Bericht mit Woche + Labor + Einnahmen als Druckansicht/PDF.
-- Mikrobiom-Ergebnis (InnerBuddies) als typ 'mikrobiom' in tests.
-- HRV aus Neuro-Fit als hrv-session importieren; Auswertung der Versuche gegen HRV.
-- Foto optional an Mahlzeit (nur lokal).
+## Stand 07.09.2026
+- ADHS_Versorgung nach `Versorgung/app-adhs/` umgezogen, Git-Historie vollstaendig erhalten
+  (git mv, alle Dateien als Rename gefuehrt).
+- Kern extrahiert: Speicher ist jetzt eine Fabrik (jede App bringt Schema und Schluessel mit),
+  Labor-Stufen und -Tor nehmen die Registry als Parameter, Ernaehrung rechnet ueber uebergebene
+  Bausteine, Oberflaeche kennt zwei Groessen. `logik.ts` der ADHS-App: 172 -> 90 Zeilen.
+- Die ADHS-App ist inhaltlich unveraendert: gleicher localStorage-Schluessel, gleiche Screens,
+  keine Datenmigration noetig.
+- Fit Senior neu gebaut (siehe app-fit-senior/NEXT.md).
+- `npm run smoke` klickt beide Apps im Chromium durch: alle Tabs, Persistenz, Rueckmeldung.
 
-## Verweise
-- Eltern: Code Projekte · Familie: psychologie-tool/module_versorgung (Python, gleiche Daten), neurodivers (docs/Studienlage, Lancet-PDF), Neuro-Fit
-- Muster: Zustaendigkeitskarte (PWA auf Vercel), E-Auto-Rechner
+## Naechste Schritte
+1. PR #1 mergen (Monorepo + Fit Senior).
+2. Vercel-Dashboard: zwei Projekte, jedes mit Root Directory auf den App-Ordner:
+   - Projekt `adhs-versorgung`: Root Directory = `app-adhs/`
+   - Projekt `fit-senior`: Root Directory = `app-fit-senior/`
+   - Beides: "Include source files outside of the Root Directory" aktivieren
+     (sonst fehlt `kern/` — Vite-Alias zeigt auf `../kern/src/index.ts`)
+   - Vercel erkennt Vite automatisch, baut `npm run build`, Output `dist/`
+   - Die `vercel.json` in den App-Ordnern greifen und setzen die Header
+3. Erst dann inhaltlich weiter (siehe die NEXT.md der beiden Aeste).
+
+## Aufpassen
+- Keine `Co-Authored-By:`-Zeile in Commits - Vercel Hobby blockt sonst.
+- Kern-Aenderungen wirken sofort in beiden Apps. Nach jeder Kern-Aenderung `npm run smoke`.
