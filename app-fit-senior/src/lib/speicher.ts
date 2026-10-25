@@ -17,7 +17,7 @@ export interface DB {
 export type Collection = "eintraege" | "einnahmen" | "versuche" | "tests" | "mahlzeiten" | "bedarfe" | "leistungen";
 
 const speicher = erstelleSpeicher<DB>({
-  key: "fit-senior.v1",
+  schluessel: "fit-senior.v1",
   exportPrefix: "fit-senior",
   leer: () => ({ eintraege: [], einnahmen: [], versuche: [], tests: [], mahlzeiten: [], bedarfe: [], leistungen: [] }),
 });

@@ -18,7 +18,7 @@ export interface DB {
 export type Collection = "eintraege" | "einnahmen" | "versuche" | "tests" | "mahlzeiten" | "hrv" | "tageswerte";
 
 const speicher = erstelleSpeicher<DB>({
-  key: "adhs-versorgung.v1",
+  schluessel: "adhs-versorgung.v1",
   exportPrefix: "adhs-versorgung",
   leer: () => ({ eintraege: [], einnahmen: [], versuche: [], tests: [], mahlzeiten: [], hrv: [], tageswerte: [] }),
 });

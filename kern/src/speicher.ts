@@ -10,7 +10,7 @@ export type Schema = Record<string, unknown[]>;
 
 export interface SpeicherOptionen<T extends Schema> {
   /** localStorage-Schlüssel, z. B. "adhs-versorgung.v1" */
-  key: string;
+  schluessel: string;
   /** Präfix der Exportdateien, z. B. "adhs-versorgung" */
   exportPrefix: string;
   /** Leerer Anfangszustand – definiert zugleich, welche Sammlungen es gibt. */
@@ -34,7 +34,7 @@ export function erstelleSpeicher<T extends Schema>(opt: SpeicherOptionen<T>): Sp
 
   const load = (): T => {
     try {
-      const raw = localStorage.getItem(opt.key);
+      const raw = localStorage.getItem(opt.schluessel);
       if (!raw) return opt.leer();
       return { ...opt.leer(), ...JSON.parse(raw) };
     } catch {
@@ -47,7 +47,7 @@ export function erstelleSpeicher<T extends Schema>(opt: SpeicherOptionen<T>): Sp
 
   function emit() {
     try {
-      localStorage.setItem(opt.key, JSON.stringify(db));
+      localStorage.setItem(opt.schluessel, JSON.stringify(db));
     } catch {
       /* Speicher voll oder blockiert – Daten bleiben im RAM */
     }
