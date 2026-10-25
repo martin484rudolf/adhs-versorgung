@@ -22,8 +22,10 @@ jobs:
     uses: martin484rudolf/gemeinsame-workflows/.github/workflows/regeln.yml@main
     with:
       erlaubter_autor: ${{ vars.ERLAUBTER_AUTOR }}
-      # Abweichungen vom Standard nur bei Bedarf:
+      # Abweichung vom Standard: dieser Branch heißt historisch monorepo-fit-senior
+      # (kein claude/|vibe/|feat/-Präfix). Muster entsprechend erweitert.
+      branch_muster: "^(claude|vibe|feat)/|^monorepo-"
+      # Weitere Abweichungen nur bei Bedarf:
       # pflicht_label_praefixe: "agent:,mode:"
-      # branch_muster: "^(claude|vibe|feat)/"
       # closes_pflicht: true
       # co_author_verboten: true
